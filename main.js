@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron') // modified
+const { app, BrowserWindow, Menu, ipcMain } = require('electron') 
 
 let mainWindow;
 const createMainWindow = () => {
@@ -66,7 +66,6 @@ app.on('ready', () => {
 })
 
 
-// newly added
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()

@@ -213,8 +213,17 @@ img {
  <script>
   const { ipcRenderer } = require('electron')
      ipcRenderer.on('update_list', (event, arg) => {
-     	console.log(arg);
-     });
+     	document.getElementById("galleryList").innerHTML += `
+	      	<article class="card">
+	            <picture class="thumbnail">
+	                <img src= "${arg['image']}" alt= "${arg['caption']}">
+	            </picture>
+	            <div class="card-content">
+
+	                <h2>${arg['caption']}</h2>
+	            </div>
+	        </article>`;
+    	 });
   </script>
 </html>
 
