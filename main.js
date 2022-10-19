@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron') 
+const { app, BrowserWindow, Menu, ipcMain, Notification } = require('electron') // modified
 
 let mainWindow;
 const createMainWindow = () => {
@@ -72,8 +72,16 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('request_add_img', (event, arg) => {
-  console.log(arg);
   newItemWindow.close()
   newItemWindow = null
+
+  // newly added
+  new Notification(
+  	{ 
+  		title: 'Hey', 
+  		 body: 'Updating gallery..'
+  	}).show()
+
+
   mainWindow.webContents.send('update_list', arg)
 });
