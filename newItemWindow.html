@@ -9,4 +9,41 @@
     <input type="submit" id="submitBtn">
   </form>
 </body>
+<script>
+    const {ipcRenderer} = require('electron')
+
+    document.getElementById('submitBtn').addEventListener("click", handleSubmit);
+    document.getElementById('imageFile').addEventListener("change", handleChangeFile);
+    
+    let params = {caption: '', image: ''}
+    
+    function getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    function handleChangeFile(event){
+      if (event.target.files.length >0) {
+          let file = event.target.files[0]
+           getBase64(file).then(
+              data => params['image'] = data
+            );
+      }
+    }
+
+
+    function handleSubmit(event) {
+      event.preventDefault()
+      let captionEvent = document.getElementById('caption');
+      if(captionEvent?.value){
+        params['caption'] = captionEvent.value;
+      }
+      console.log(params)
+      ipcRenderer.send('request_add_img', params)
+    }
+  </script>
 </html>

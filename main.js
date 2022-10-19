@@ -1,15 +1,18 @@
-const { app, BrowserWindow, Menu } = require('electron') 
+const { app, BrowserWindow, Menu, ipcMain } = require('electron') // modified
 
 let mainWindow;
 const createMainWindow = () => {
   	mainWindow = new BrowserWindow({
     	width: 1500,
-    	height: 1000
+    	height: 1000,
+    	webPreferences: {
+      		nodeIntegration: true,
+      		contextIsolation: false,
+    	}
   	})
   	 mainWindow.loadFile('mainWindow.html') 
 }
 
-// newly added
 
 const createNewItemWindow = () => {
   newItemWindow = new BrowserWindow({
@@ -31,7 +34,7 @@ let mainMenuHash = [
 				label: 'New',
 				accelerator: 'ctrl + shift + n',
 				click(){
-					createNewItemWindow() //newly added
+					createNewItemWindow() 
 				}
 			},
 			{
@@ -61,3 +64,17 @@ app.on('ready', () => {
 	let mainMenu = Menu.buildFromTemplate(mainMenuHash)
 	Menu.setApplicationMenu(mainMenu) 
 })
+
+
+// newly added
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
+})
+
+ipcMain.on('request_add_img', (event, arg) => {
+  console.log(arg);
+  newItemWindow.close()
+  newItemWindow = null
+  mainWindow.webContents.send('update_list', arg)
+});

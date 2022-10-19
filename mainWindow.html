@@ -210,6 +210,11 @@ img {
     </main>
 
 </body>
-
+ <script>
+  const { ipcRenderer } = require('electron')
+     ipcRenderer.on('update_list', (event, arg) => {
+     	console.log(arg);
+     });
+  </script>
 </html>
 
