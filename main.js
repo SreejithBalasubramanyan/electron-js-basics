@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron') // modified
+const { app, BrowserWindow, Menu } = require('electron') 
 
 let mainWindow;
 const createMainWindow = () => {
@@ -9,7 +9,19 @@ const createMainWindow = () => {
   	 mainWindow.loadFile('mainWindow.html') 
 }
 
-//newly added
+// newly added
+
+const createNewItemWindow = () => {
+  newItemWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    }
+  })
+  newItemWindow.loadFile('newItemWindow.html')
+}
 
 let mainMenuHash = [ 
 	{ 
@@ -19,7 +31,7 @@ let mainMenuHash = [
 				label: 'New',
 				accelerator: 'ctrl + shift + n',
 				click(){
-					console.log("need to trigger newItemWindow from here.")
+					createNewItemWindow() //newly added
 				}
 			},
 			{
@@ -42,7 +54,7 @@ let mainMenuHash = [
 	}
 ]
 
-//modified
+
 
 app.on('ready', () => { 
 	createMainWindow()
